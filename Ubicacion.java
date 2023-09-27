@@ -15,4 +15,6 @@ public class Ubicacion {
     String direccion;
     String sector;
     list <Ruta> rutasPerteneciente;
+
+    
 }
