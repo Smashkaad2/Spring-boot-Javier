@@ -10,11 +10,11 @@ import java.util.list;
 public class Ubicacion {
     @Id
     @GeneratedValue
-    long ubicacionID;
-    String nombreUb;
-    String direccion;
-    String sector;
-    list <Ruta> rutasPerteneciente;
+    private long ubicacionID;
+    private String nombreUb;
+    private String direccion;
+    private String sector;
+    private list<Ruta> rutasPerteneciente;
 
     
 }

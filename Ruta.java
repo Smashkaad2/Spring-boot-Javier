@@ -18,13 +18,13 @@ import lombok.Setter;
 
 public class Ruta{
 
-String rutaId;
-String nombreRuta;
-String descripcion;
-String autor;
-double distancia;
-String fecha;
-double tiempo;
+private String rutaId;
+private String nombreRuta;
+private String descripcion;
+private String autor;
+private double distancia;
+private String fecha;
+private double tiempo;
 private List<Ubicacion> ubicaciones;
 private List<Calificacion> calificaciones;
 

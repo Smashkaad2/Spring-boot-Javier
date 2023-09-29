@@ -19,11 +19,11 @@ import lombok.Setter;
 
 public class Calificacion {
 
-    Stirng calificacionId;
-    String autor;
-    Ruta calificacionRuta;
-    int puntuacion;
-    String comentarios;
+    private Stirng calificacionId;
+    private String autor;
+    private Ruta calificacionRuta;
+    private int puntuacion;
+    private String comentarios;
 
     public Calificacion(Stirng calificacionId, String autor, Ruta calificacionRuta, int puntuacion,
             String comentarios) {

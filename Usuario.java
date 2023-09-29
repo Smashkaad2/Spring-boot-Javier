@@ -10,10 +10,10 @@ import java.util.list;
 public class Usuario {
     @Id
     @GeneratedValue
-    long UsuarioID;
-    String nombreU;
-    String apellido;
-    String correo;
-    String nickname;
-    list<Ruta> rutasPropias;
+    private long UsuarioID;
+    private String nombreU;
+    private String apellido;
+    private String correo;
+    private String nickname;
+    private list<Ruta> rutasPropias;
 }
