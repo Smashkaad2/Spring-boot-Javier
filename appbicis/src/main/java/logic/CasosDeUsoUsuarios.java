@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +17,18 @@ public class CasosDeUsoUsuarios {
     public void iniciarSesion(String login, String password) throws Exception{
         //Valida que exista el usuario
         
-        try {
-            Usuario u = repositorioUsuario.findAllById(login);
-            if(!u.getContrasena().equals(password)){
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-            throw new Exception();
+        
+         Optional<RepositorioUsuario> u = repositorioUsuario.findById(login);
+         if(u.isEmpty()){
+            throw new Exception("Usuario no existe");
+         }
+         if(!((Usuario) u.get()).getContrasena().equals(password)){
+            throw new Exception("Contraseña no coincide");
         }
     }
 
     public void crearUsuario(String nombre){
-        Usuario u = new Usuario();
-        repositorioUsuario.save(u);
+        Usuario u = new Usuario(u);
+        //repositorioUsuario.save(u); 
     }
 }

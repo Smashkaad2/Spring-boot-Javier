@@ -13,7 +13,7 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue
-    private long UsuarioID;
+    private String UsuarioID;
 
     private String nombreU;
     private String apellido;
