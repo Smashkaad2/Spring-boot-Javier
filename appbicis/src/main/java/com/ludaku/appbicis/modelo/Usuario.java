@@ -19,6 +19,7 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String nickname;
+    private String contrasena;
 
     @OneToMany(mappedBy = "autor")
     private List<Ruta> rutasPropias;

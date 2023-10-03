@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Ruta {
     @Id
     @GeneratedValue
-    private String rutaId;
+    private Long rutaId;
 
     private String nombreRuta;
     private String descripcion;
