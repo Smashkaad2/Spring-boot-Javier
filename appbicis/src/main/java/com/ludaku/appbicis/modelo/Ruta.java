@@ -11,9 +11,11 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
 @Entity
 public class Ruta {
     @Id
@@ -24,7 +26,7 @@ public class Ruta {
     private String descripcion;
 
     @ManyToOne
-    private String autor;
+    private Usuario autor;
 
     private double distancia;
 

@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.support.Repositories;
 
-import logic.CasosDeUsoUsuarios;
+import com.ludaku.appbicis.logic.*;
+import com.ludaku.appbicis.repositorios.*;
 
 @SpringBootTest
 public class CasosDeUsoUsuarioTest {
@@ -15,15 +17,13 @@ public class CasosDeUsoUsuarioTest {
     @Autowired
     private CasosDeUsoUsuarios casosDeUsoUsuarios;
 
+    @Autowired
+    private RepositorioUsuario usuarios;
+
     @Test
     public void pruebaLogin(){
-        try {
-            casosDeUsoUsuarios.iniciarSesion("X", "Y");
-            
-        } catch (Exception e) {
-            // TODO: handle exception
-            fail("fallo");
-            assertEquals(1, 0, "Fallo2");
-        }
+
+        casosDeUsoUsuarios.crearUsuario("jaime");
+
     }
 }
