@@ -13,5 +13,6 @@ public interface RepositorioUsuario
     //El crea automaticamente 
     //save finAll
     List<Usuario> findByNickname(String nickname);
+    List<Usuario> findByContrasena(String contrasena);
     
 }
