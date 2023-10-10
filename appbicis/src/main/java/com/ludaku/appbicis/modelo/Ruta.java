@@ -1,6 +1,6 @@
 package com.ludaku.appbicis.modelo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,9 +32,8 @@ public class Ruta {
 
     private double distancia;
 
+    @Temporal(TemporalType.TIMESTAMP) // fecha y hora
     private Date fecha;
-
-    private double tiempo;
 
     @ManyToMany(mappedBy = "rutasPerteneciente")
     private List<Ubicacion> ubicaciones;
