@@ -29,6 +29,7 @@ public class CasosDeUsoUsuarios {
         Usuario u = new Usuario(nombre);
         
         repositorioUsuario.save(u); 
+        return;
     }
 
     public void iniciarSesionUsuario(String login, String password) throws ExcepcionUsuarios{
@@ -42,7 +43,7 @@ public class CasosDeUsoUsuarios {
             }
         }
         
-
+        return;
     }
 
     public void opcionesDeRuta(String destino){
