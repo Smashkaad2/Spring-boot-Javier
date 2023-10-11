@@ -7,9 +7,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ludaku.appbicis.modelo.Ruta;
+import com.ludaku.appbicis.modelo.Ubicacion;
 import com.ludaku.appbicis.modelo.Usuario;
 import com.ludaku.appbicis.repositorios.RepositorioRuta;
+import com.ludaku.appbicis.repositorios.RepositorioUbicacion;
 import com.ludaku.appbicis.repositorios.RepositorioUsuario;
+
+@Service
 
 public class CasosDeUsoCrearRutas {
 
@@ -18,6 +22,9 @@ public class CasosDeUsoCrearRutas {
 
     @Autowired
     RepositorioUsuario usuarios;
+
+    @Autowired
+    RepositorioUbicacion ubicaciones;
 
 
     // CU01: Crear ruta
@@ -59,13 +66,23 @@ public class CasosDeUsoCrearRutas {
     public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) {
 
         // 1. valida que exista la ruta
+        Optional<Ruta> ruta = rutas.findById(idRuta);
+        if (ruta.isEmpty()) {
+            throw new ExcepcionRutas("No existe una ruta con ese id");
+        }
 
         // 2. valida que exista la ubicación (**)
+        Optional<Ubicacion> ubicacion = ubicaciones.findById(idUbicacion);
+        if (ubicacion.isEmpty()) {
+            throw new ExcepcionRutas("No existe una ubicación con este id");
+        }
 
         // 3. agrega la ubicación a la ruta
+        Ruta rutaR = ruta.get();
+        rutaR.getUbicaciones().add(ubicacion.get());
 
         // 4- guarda la ruta -- con la ubicación agregada
-
+        rutas.save(rutaR);
     }
 
 }
