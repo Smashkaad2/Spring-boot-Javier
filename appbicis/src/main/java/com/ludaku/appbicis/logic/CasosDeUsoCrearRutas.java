@@ -1,10 +1,10 @@
 package com.ludaku.appbicis.logic;
 
-import java.security.PublicKey;
 import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ludaku.appbicis.modelo.Ruta;
 import com.ludaku.appbicis.modelo.Ubicacion;
@@ -14,7 +14,6 @@ import com.ludaku.appbicis.repositorios.RepositorioUbicacion;
 import com.ludaku.appbicis.repositorios.RepositorioUsuario;
 
 @Service
-
 public class CasosDeUsoCrearRutas {
 
     @Autowired
@@ -43,7 +42,7 @@ public class CasosDeUsoCrearRutas {
         }
 
         // 2. Valida que no ...
-        java.util.List <Ruta> rutasExistentes = rutas.findByNickname(nombreRuta);
+        java.util.List <Ruta> rutasExistentes = rutas.findByNombreRuta(nombreRuta);
         if (rutasExistentes.size() > 0){
             throw new ExcepcionRutas("Existe una ruta con este Nombre");
         }
@@ -63,7 +62,8 @@ public class CasosDeUsoCrearRutas {
     }
     
     // otro método?
-    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) {
+    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) 
+        throws ExcepcionRutas {
 
         // 1. valida que exista la ruta
         Optional<Ruta> ruta = rutas.findById(idRuta);

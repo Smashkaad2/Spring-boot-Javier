@@ -1,6 +1,6 @@
 package com.ludaku.logic;
 
-import org.assertj.core.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,6 @@ import com.ludaku.appbicis.modelo.Usuario;
 import com.ludaku.appbicis.repositorios.RepositorioUsuario;
 
 @SpringBootTest
-
 public class CasosDeUsoRutaTests {
 
     @Autowired
@@ -28,7 +27,7 @@ public class CasosDeUsoRutaTests {
         try {
             pruebaRutaCrear.crearRutas("Casa", "Ruta A casa", u.getUsuarioID());
         } catch (Exception e) {
-            Assertions.fail("El programa fallo y no deberia");
+            fail("El programa fallo y no deberia");
         }
 
     }
@@ -39,7 +38,7 @@ public class CasosDeUsoRutaTests {
         usuarios.deleteAll();
         try {
             pruebaRutaCrear.crearRutas("Casa", "Ruta A casa", 10L);
-            Assertions.fail("El programa creo la ruta y no deberia porque el usuario no existe");
+            fail("El programa creo la ruta y no deberia porque el usuario no existe");
         } catch (Exception e) {
             //Ok
         }

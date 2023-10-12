@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface RepositorioRuta 
 extends JpaRepository<Ruta,Long>{
-    List<Ruta> findByNickname(String nickname);
+ 
+    List<Ruta> findByNombreRuta(String nombreRuta);
+
 }

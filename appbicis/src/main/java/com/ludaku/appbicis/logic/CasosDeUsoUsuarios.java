@@ -1,10 +1,8 @@
 package com.ludaku.appbicis.logic;
 
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ludaku.appbicis.modelo.Ruta;
 import com.ludaku.appbicis.modelo.Usuario;
 import com.ludaku.appbicis.repositorios.RepositorioUsuario;
 
