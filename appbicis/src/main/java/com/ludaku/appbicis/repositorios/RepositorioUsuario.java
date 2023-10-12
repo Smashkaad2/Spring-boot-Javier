@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public interface RepositorioUsuario 
     extends JpaRepository<Usuario, Long>{
-    //El crea automaticamente 
-    //save finAll
+
     List<Usuario> findByNickname(String nickname);
-    List<Usuario> findByContrasena(String contrasena);
     
 }
