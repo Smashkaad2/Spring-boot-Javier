@@ -52,6 +52,8 @@ public class CasosDeUsoCrearRutas {
         // 10. Guarda la nueva ruta 
         Ruta nuevaRuta = new Ruta();
 
+        nuevaRuta.setNombreRuta(nombreRuta);
+        nuevaRuta.setDescripcion(descripcion);
         nuevaRuta.setFecha(new Date()); // fecha y hora actual
 
         // asigno como autor al usuario que buscamos al inicio del caso de uso
