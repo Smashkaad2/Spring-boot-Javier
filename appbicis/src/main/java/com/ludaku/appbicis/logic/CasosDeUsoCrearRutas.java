@@ -1,6 +1,7 @@
 package com.ludaku.appbicis.logic;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,25 @@ public class CasosDeUsoCrearRutas {
 
         // 4- guarda la ruta -- con la ubicación agregada
         rutas.save(rutaR);
+    }
+
+    public void mostrarRutasAlternativas(double distancia) throws ExcepcionRutas{
+        //Esto deberia cambiarse ya que es bueno que muestre no solo las rutas que tienen la distancia exacta solicitada si no tambien las rutas que varian 1 o 5 kilometros
+
+        //Valida que haya rutas con la distancia solicitada
+        List<Ruta> ruta = rutas.findByDistanciaRutas(distancia);
+        if(ruta.isEmpty()){
+            throw new ExcepcionRutas("No existen rutas con esa distancia");
+        }
+        //Muestra las rutas solicitadas
+        for(int i = 0; i<ruta.size(); i++){
+            System.out.println(ruta.get(i).getNombreRuta());
+            System.out.println(ruta.get(i).getDescripcion());
+            System.out.println(ruta.get(i).getDistancia());
+            System.out.println(ruta.get(i).getAutor().getNickname());
+        }
+
+        return;
     }
 
 }

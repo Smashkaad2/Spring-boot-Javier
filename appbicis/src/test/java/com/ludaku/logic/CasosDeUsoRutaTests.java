@@ -84,5 +84,60 @@ public class CasosDeUsoRutaTests {
         }
 
     }
+    @Test
+    public void mostrarRutasAlternativasSinErrores(){
+        try {
+            //Arrange
+            Usuario u = new Usuario();
+            u.setNombreU("Jose Manuel");
+            u.setApellido("Rodriguez Torres");
+            u.setCorreo("josemanu456@gmail.com");
+            u.setNickname("Jose");
+            u.setContrasena("12345");
+            
+            u = usuarios.save(u);
+
+            Ruta r = new Ruta();
+            r.setAutor(u);
+            r.setDescripcion("Ruta super bonita gozando de belleza");
+            r.setDistancia(20);
+            r.setNombreRuta("Bello Paraiso");
+            //Act
+            pruebaRutaCrear.mostrarRutasAlternativas(20);
+            //Assert
+            //OK
+        } catch (Exception e) {
+            fail("Fallo por un error que no deberia", e);
+        }
+    }
+    @Test
+    public void mostrarRutasAlternativasNoExistenRutasConLaDistanciaEspecificada(){
+        try {
+            //Arrange
+            Usuario u = new Usuario();
+            u.setNombreU("Jose Manuel");
+            u.setApellido("Rodriguez Torres");
+            u.setCorreo("josemanu456@gmail.com");
+            u.setNickname("Jose");
+            u.setContrasena("12345");
+            
+            u = usuarios.save(u);
+
+            Ruta r = new Ruta();
+            r.setAutor(u);
+            r.setDescripcion("Ruta super bonita gozando de belleza");
+            r.setDistancia(10);
+            r.setNombreRuta("Bello Paraiso");
+
+            //Act
+            pruebaRutaCrear.mostrarRutasAlternativas(20);
+            
+            //Assert
+            fail("Tomo una ruta que no tenia la distancia especificada");
+
+        } catch (Exception e) {
+            // Ok
+        }
+    }
 
 }
