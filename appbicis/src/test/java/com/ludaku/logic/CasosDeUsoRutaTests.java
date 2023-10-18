@@ -37,107 +37,116 @@ public class CasosDeUsoRutaTests {
     }
 
     @Test
-    public void pruebaCrearRuta() {
-        
+    public void pruebaUnirseARutaExitosamente() {
         try {
-
             // Arrange
-            Usuario u = new Usuario("Javier");
-            u = usuarios.save(u);
-    
-            // act
-            pruebaRutaCrear.crearRutas("Casa", "Ruta A casa", u.getUsuarioID());
+            Usuario usuario = new Usuario("Javier");
+            usuario = usuarios.save(usuario);
 
-            // assert
-            List<Ruta> listaRutas = rutas.findByNombreRuta("Casa");
-            assertTrue(listaRutas.size() > 0, "No se grabó la ruta");
+            Ruta ruta = new Ruta("Ruta A casa");
+            ruta = rutas.save(ruta);
 
-            Ruta rutaEnBD = listaRutas.get(0);
+            // Act
+            pruebaRutaCrear.unirseARuta(ruta.getId(), usuario.getUsuarioID());
+
+            // Assert
+            Ruta rutaEnBD = rutas.findById(ruta.getId()).orElse(null);
             assertNotNull(rutaEnBD, "La ruta es NULL");
-            assertEquals(rutaEnBD.getDescripcion(), "Ruta A casa", "La descripción no coincide");
-            assertNotNull(rutaEnBD.getAutor(), "La ruta tiene el autor en NULL");
-            assertEquals(rutaEnBD.getAutor().getNombreU(), "Javier", "El nombre del autor no coincide");
-
+            assertTrue(rutaEnBD.getParticipantes().contains(usuario), "El usuario no se unió a la ruta");
 
         } catch (Exception e) {
-            fail("El programa fallo y no deberia");
+            fail("El programa falló y no debería");
         }
-
     }
 
     @Test
-    public void pruebaCrearRutaConUsuarioInexistente() {
-
+    public void pruebaUnirseARutaRutaInexistente() {
         try {
+            // Arrange
+            Usuario usuario = new Usuario("Javier");
+            usuario = usuarios.save(usuario);
 
-            pruebaRutaCrear.crearRutas("Casa", "Ruta A casa", 10L);
-            
-            fail("El programa creo la ruta y no deberia porque el usuario no existe");
+            // Act & Assert
+            assertThrows(ExcepcionRutas.class, () -> {
+                pruebaRutaCrear.unirseARuta(10L, usuario.getUsuarioID());
+            });
+
+            // Validar que el usuario no se unió a ninguna ruta
+            Usuario usuarioEnBD = usuarios.findById(usuario.getUsuarioID()).orElse(null);
+            assertNotNull(usuarioEnBD, "El usuario es NULL");
+            assertTrue(usuarioEnBD.getRutas().isEmpty(), "El usuario se unió a una ruta, pero no debería");
 
         } catch (Exception e) {
-
-            // valida que no se halla creado una ruta con ese nombre
-            List<Ruta> listaRutas = rutas.findByNombreRuta("Casa");
-            assertTrue(listaRutas.size() == 0, "Se grabó una ruta y no debía");
-
-            // Ok
+            fail("El programa falló y no debería");
         }
-
     }
+
     @Test
-    public void mostrarRutasAlternativasSinErrores(){
+    public void pruebaUnirseARutaUsuarioInexistente() {
         try {
-            //Arrange
-            Usuario u = new Usuario();
-            u.setNombreU("Jose Manuel");
-            u.setApellido("Rodriguez Torres");
-            u.setCorreo("josemanu456@gmail.com");
-            u.setNickname("Jose");
-            u.setContrasena("12345");
-            
-            u = usuarios.save(u);
+            // Arrange
+            Ruta ruta = new Ruta("Ruta A casa");
+            ruta = rutas.save(ruta);
 
-            Ruta r = new Ruta();
-            r.setAutor(u);
-            r.setDescripcion("Ruta super bonita gozando de belleza");
-            r.setDistancia(20);
-            r.setNombreRuta("Bello Paraiso");
-            //Act
-            pruebaRutaCrear.mostrarRutasAlternativas(20);
-            //Assert
-            //OK
+            // Act & Assert
+            assertThrows(ExcepcionRutas.class, () -> {
+                pruebaRutaCrear.unirseARuta(ruta.getId(), 10L);
+            });
+
+            // Validar que la ruta no tiene participantes
+            Ruta rutaEnBD = rutas.findById(ruta.getId()).orElse(null);
+            assertNotNull(rutaEnBD, "La ruta es NULL");
+            assertTrue(rutaEnBD.getParticipantes().isEmpty(), "La ruta tiene participantes, pero no debería");
+
         } catch (Exception e) {
-            fail("Fallo por un error que no deberia", e);
+            fail("El programa falló y no debería");
         }
     }
+
     @Test
-    public void mostrarRutasAlternativasNoExistenRutasConLaDistanciaEspecificada(){
+    public void pruebaFiltrarRutas() {
         try {
-            //Arrange
-            Usuario u = new Usuario();
-            u.setNombreU("Jose Manuel");
-            u.setApellido("Rodriguez Torres");
-            u.setCorreo("josemanu456@gmail.com");
-            u.setNickname("Jose");
-            u.setContrasena("12345");
-            
-            u = usuarios.save(u);
+            // Arrange
+            Ruta ruta1 = new Ruta("Ruta 1");
+            ruta1.setDistanciaRecorrido(15);
+            rutas.save(ruta1);
 
-            Ruta r = new Ruta();
-            r.setAutor(u);
-            r.setDescripcion("Ruta super bonita gozando de belleza");
-            r.setDistancia(10);
-            r.setNombreRuta("Bello Paraiso");
+            Ruta ruta2 = new Ruta("Ruta 2");
+            ruta2.setDistanciaRecorrido(25);
+            rutas.save(ruta2);
 
-            //Act
-            pruebaRutaCrear.mostrarRutasAlternativas(20);
-            
-            //Assert
-            fail("Tomo una ruta que no tenia la distancia especificada");
+            // Act
+            List<Ruta> rutasFiltradas = pruebaRutaCrear.filtrarRutas(20);
+
+            // Assert
+            assertEquals(1, rutasFiltradas.size(), "Se esperaba una sola ruta en los resultados");
 
         } catch (Exception e) {
-            // Ok
+            fail("El programa falló y no debería");
         }
     }
 
+    @Test
+    public void pruebaFiltrarRutasSinResultados() {
+        try {
+            // Arrange
+            Ruta ruta1 = new Ruta("Ruta 1");
+            ruta1.setDistanciaRecorrido(25);
+            rutas.save(ruta1);
+
+            Ruta ruta2 = new Ruta("Ruta 2");
+            ruta2.setDistanciaRecorrido(30);
+            rutas.save(ruta2);
+
+            // Act
+            List<Ruta> rutasFiltradas = pruebaRutaCrear.filtrarRutas(20);
+
+            // Assert
+            assertTrue(rutasFiltradas.isEmpty(), "No se esperaban rutas en los resultados");
+
+        } catch (Exception e) {
+            fail("El programa falló y no debería");
+        }
+    }
 }
+
