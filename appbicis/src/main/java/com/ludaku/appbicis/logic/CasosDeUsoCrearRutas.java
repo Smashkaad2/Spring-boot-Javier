@@ -41,15 +41,13 @@ public class CasosDeUsoCrearRutas {
             throw new ExcepcionRutas("No existe un usuario con ese id");
         }
 
-        // 2. Valida que no ...
+        // 2. Valida que no exista una ruta con este nombre
         java.util.List<Ruta> rutasExistentes = rutas.findByNombreRuta(nombreRuta);
         if (rutasExistentes.size() > 0){
             throw new ExcepcionRutas("Existe una ruta con este Nombre");
         }
 
-        // :
-
-        // 10. Guarda la nueva ruta
+        //Guarda la nueva ruta
         Ruta nuevaRuta = new Ruta();
 
         nuevaRuta.setNombreRuta(nombreRuta);
@@ -63,9 +61,8 @@ public class CasosDeUsoCrearRutas {
 
     }
 
-    // otro método?
-    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion)
-            throws ExcepcionRutas {
+    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) 
+        throws ExcepcionRutas {
 
         // 1. valida que exista la ruta
         Optional<Ruta> ruta = rutas.findById(idRuta);
@@ -76,7 +73,7 @@ public class CasosDeUsoCrearRutas {
         // 2. valida que exista la ubicación (**)
         Optional<Ubicacion> ubicacion = ubicaciones.findById(idUbicacion);
         if (ubicacion.isEmpty()) {
-            throw a new ExcepcionRutas("No existe una ubicación con este id");
+            throw new ExcepcionRutas("No existe una ubicación con este id");
         }
 
         // 3. agrega la ubicación a la ruta
@@ -86,6 +83,25 @@ public class CasosDeUsoCrearRutas {
         // 4- guarda la ruta -- con la ubicación agregada
         rutas.save(rutaR);
     }
+
+
+    public void mostrarRutasAlternativas(double distancia) throws ExcepcionRutas{
+        //Valida que haya rutas con la distancia solicitada
+        List<Ruta> ruta = rutas.findByDistanciaRutas(distancia);
+        if(ruta.isEmpty()){
+            throw new ExcepcionRutas("No existen rutas con esa distancia");
+        }
+        //Muestra las rutas solicitadas
+        for(int i = 0; i<ruta.size(); i++){
+            System.out.println(ruta.get(i).getNombreRuta());
+            System.out.println(ruta.get(i).getDescripcion());
+            System.out.println(ruta.get(i).getDistancia());
+            System.out.println(ruta.get(i).getAutor().getNickname());
+        }
+
+        return;
+    }
+
 
     // CU02: Unirse a una ruta específica
     public void unirseARuta(Long idRuta, Long idUsuario) throws ExcepcionRutas {
