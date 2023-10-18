@@ -89,4 +89,33 @@ public class CasosDeUsoUsuarioTests {
          }
     }
 
+    @Test
+    public void registrarUsuarioConUserExistente(){
+
+        try {
+
+            // Arrange
+            Usuario u = new Usuario();
+            u.setNombreU("Javier Emiro");
+            u.setApellido("Useche Acosta");
+            u.setCorreo("javiergracioso@lifenvader");
+            u.setNickname("KaaD");
+            u.setContrasena("12345");
+            
+            u = usuarios.save(u);
+
+    
+            // act
+            casosDeUsoUsuarios.registrarUsuario("KaaD");
+        
+            // assert
+            //ok
+
+
+        } catch (Exception e) {
+            fail("No se encontro el usuario que se busca");
+        }
+
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ludaku.appbicis.modelo.Usuario;
+import com.ludaku.appbicis.repositorios.RepositorioUserRegistrado;
 import com.ludaku.appbicis.repositorios.RepositorioUsuario;
 
 @Service
@@ -13,6 +14,9 @@ public class CasosDeUsoUsuarios {
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
+
+    @Autowired
+    private RepositorioUserRegistrado repositorioUserRegistrado;
 
     public void crearUsuario(String login, String password, String nombre) throws ExcepcionUsuarios {
 
@@ -50,6 +54,21 @@ public class CasosDeUsoUsuarios {
         }
 
         return;
+    }
+
+    public void registrarUsuario(String userName) throws ExcepcionUsuarios {
+
+        //#1 encuentra el usuario a partir de su Id
+        List<Usuario> usuario = repositorioUsuario.findByNickname(userName);
+        if (usuario.isEmpty()) {
+            throw new ExcepcionUsuarios("No existe un usuario con ese id");
+        }
+
+        //#2 Guarda el usuario encontrado
+        Usuario user = usuario.get(0);
+
+        //#3 Registrarlo en el repositorio de usuarios registrados
+        repositorioUserRegistrado.save(user);
     }
 
 }
