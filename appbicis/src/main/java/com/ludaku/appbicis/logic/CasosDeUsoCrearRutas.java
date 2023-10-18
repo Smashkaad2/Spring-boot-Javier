@@ -146,7 +146,7 @@ public class CasosDeUsoCrearRutas {
 
         // 2. Filtra las rutas por distancia máxima
         List<Ruta> rutasFiltradas = todasLasRutas.stream()
-                .filter(ruta -> ruta.getDistanciaRecorrido() <= distanciaMaxima)
+                .filter(ruta -> ruta.getDistancia() <= distanciaMaxima)
                 .collect(Collectors.toList());
 
         // 3. Si no existen rutas que cumplan con los filtros especificados, muestra un mensaje
@@ -157,3 +157,4 @@ public class CasosDeUsoCrearRutas {
         return rutasFiltradas;
     }
 }
+

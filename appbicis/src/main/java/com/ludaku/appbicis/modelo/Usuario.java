@@ -36,5 +36,12 @@ public class Usuario {
     {
         this.nombreU = nombreU;
     }
+
+    public List<Ruta> getRutas() {
+        return null;
+    }
+
+    public Usuario(Class<Long> class1) {
+    }
 }
 

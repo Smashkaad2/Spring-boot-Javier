@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -188,6 +189,9 @@ public class CasosDeUsoRutaTests {
         } catch (Exception e) {
             fail("El programa falló y no debería");
         }
+    }
+
+    private void assertThrows(Class<ExcepcionRutas> class1, Executable executable) {
     }
 
     @Test

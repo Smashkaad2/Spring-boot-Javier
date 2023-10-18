@@ -32,7 +32,7 @@ public class Ruta {
 
     private double distancia;
 
-    @Temporal(TemporalType.TIMESTAMP) // fecha y hora
+    @Temporal(String stringTemporalType.TIMESTAMP) // fecha y hora
     private Date fecha;
 
     @ManyToMany(mappedBy = "rutasPerteneciente")
@@ -40,4 +40,28 @@ public class Ruta {
     
     @OneToMany(mappedBy = "calificacionRuta", fetch = FetchType.LAZY)
     private List<Calificacion> calificaciones;
+
+    public void disminuirCupo() {
+    }
+
+    public void agregarParticipante(Usuario usuario) {
+    }
+
+    public int getCupoDisponible() {
+        return 0;
+    }
+
+    public Ruta(String string) {
+    }
+
+    public Long getId() {
+        return null;
+    }
+
+    public List<Ruta> getParticipantes() {
+        return null;
+    }
+
+    public void setDistanciaRecorrido(int i) {
+    }
 }
