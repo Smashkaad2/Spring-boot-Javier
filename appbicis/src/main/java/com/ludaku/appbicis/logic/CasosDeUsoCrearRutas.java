@@ -1,8 +1,9 @@
 package com.ludaku.appbicis.logic;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,15 +27,13 @@ public class CasosDeUsoCrearRutas {
     @Autowired
     RepositorioUbicacion ubicaciones;
 
-
     // CU01: Crear ruta
     public void crearRutas(
-        String nombreRuta,
-        String descripcion, 
-        Long idUsuario 
-        // ...
-    )
-        throws ExcepcionRutas {
+            String nombreRuta,
+            String descripcion,
+            Long idUsuario
+            // ...
+    ) throws ExcepcionRutas {
 
         // 1. Valida que exista un usuario con ese id
         Optional<Usuario> usuario = usuarios.findById(idUsuario);
@@ -43,14 +42,14 @@ public class CasosDeUsoCrearRutas {
         }
 
         // 2. Valida que no ...
-        java.util.List <Ruta> rutasExistentes = rutas.findByNombreRuta(nombreRuta);
+        java.util.List<Ruta> rutasExistentes = rutas.findByNombreRuta(nombreRuta);
         if (rutasExistentes.size() > 0){
             throw new ExcepcionRutas("Existe una ruta con este Nombre");
         }
 
         // :
 
-        // 10. Guarda la nueva ruta 
+        // 10. Guarda la nueva ruta
         Ruta nuevaRuta = new Ruta();
 
         nuevaRuta.setNombreRuta(nombreRuta);
@@ -63,10 +62,10 @@ public class CasosDeUsoCrearRutas {
         rutas.save(nuevaRuta);
 
     }
-    
+
     // otro método?
-    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) 
-        throws ExcepcionRutas {
+    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion)
+            throws ExcepcionRutas {
 
         // 1. valida que exista la ruta
         Optional<Ruta> ruta = rutas.findById(idRuta);
@@ -77,7 +76,7 @@ public class CasosDeUsoCrearRutas {
         // 2. valida que exista la ubicación (**)
         Optional<Ubicacion> ubicacion = ubicaciones.findById(idUbicacion);
         if (ubicacion.isEmpty()) {
-            throw new ExcepcionRutas("No existe una ubicación con este id");
+            throw a new ExcepcionRutas("No existe una ubicación con este id");
         }
 
         // 3. agrega la ubicación a la ruta
@@ -88,23 +87,57 @@ public class CasosDeUsoCrearRutas {
         rutas.save(rutaR);
     }
 
-    public void mostrarRutasAlternativas(double distancia) throws ExcepcionRutas{
-        //Esto deberia cambiarse ya que es bueno que muestre no solo las rutas que tienen la distancia exacta solicitada si no tambien las rutas que varian 1 o 5 kilometros
-
-        //Valida que haya rutas con la distancia solicitada
-        List<Ruta> ruta = rutas.findByDistanciaRutas(distancia);
-        if(ruta.isEmpty()){
-            throw new ExcepcionRutas("No existen rutas con esa distancia");
-        }
-        //Muestra las rutas solicitadas
-        for(int i = 0; i<ruta.size(); i++){
-            System.out.println(ruta.get(i).getNombreRuta());
-            System.out.println(ruta.get(i).getDescripcion());
-            System.out.println(ruta.get(i).getDistancia());
-            System.out.println(ruta.get(i).getAutor().getNickname());
+    // CU02: Unirse a una ruta específica
+    public void unirseARuta(Long idRuta, Long idUsuario) throws ExcepcionRutas {
+        // 1. Valida que exista la ruta
+        Optional<Ruta> rutaOptional = rutas.findById(idRuta);
+        if (rutaOptional.isEmpty()) {
+            throw new ExcepcionRutas("No existe una ruta con ese id");
         }
 
-        return;
+        Ruta rutaSeleccionada = rutaOptional.get();
+
+        // 2. Valida que exista el usuario
+        Optional<Usuario> usuarioOptional = usuarios.findById(idUsuario);
+        if (usuarioOptional.isEmpty()) {
+            throw new ExcepcionRutas("No existe un usuario con ese id");
+        }
+
+        Usuario usuario = usuarioOptional.get();
+
+        // 3. Verifica que exista cupo para un nuevo participante
+        if (rutaSeleccionada.getCupoDisponible() <= 0) {
+            throw new ExcepcionRutas("No hay disponibilidad de cupos en esta ruta");
+        }
+
+        // 4. Añade al usuario a la lista de participantes de la ruta
+        rutaSeleccionada.agregarParticipante(usuario);
+
+        // 5. Disminuye el cupo disponible
+        rutaSeleccionada.disminuirCupo();
+
+        // 6. Actualiza la ruta en la base de datos
+        rutas.save(rutaSeleccionada);
+
+        // 7. Muestra alerta "se ha unido con éxito"
+        System.out.println("Se ha unido con éxito a la ruta " + rutaSeleccionada.getNombreRuta());
     }
 
+    // CU03: Filtrar rutas existentes
+    public List<Ruta> filtrarRutas(double distanciaMaxima) {
+        // 1. Muestra todas las rutas disponibles
+        List<Ruta> todasLasRutas = rutas.findAll();
+
+        // 2. Filtra las rutas por distancia máxima
+        List<Ruta> rutasFiltradas = todasLasRutas.stream()
+                .filter(ruta -> ruta.getDistanciaRecorrido() <= distanciaMaxima)
+                .collect(Collectors.toList());
+
+        // 3. Si no existen rutas que cumplan con los filtros especificados, muestra un mensaje
+        if (rutasFiltradas.isEmpty()) {
+            System.out.println("No hay rutas existentes con los requisitos especificados");
+        }
+
+        return rutasFiltradas;
+    }
 }
