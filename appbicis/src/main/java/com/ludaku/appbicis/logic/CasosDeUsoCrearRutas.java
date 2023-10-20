@@ -32,7 +32,7 @@ public class CasosDeUsoCrearRutas {
             String nombreRuta,
             String descripcion,
             Long idUsuario
-            // ...
+    // ...
     ) throws ExcepcionRutas {
 
         // 1. Valida que exista un usuario con ese id
@@ -43,11 +43,11 @@ public class CasosDeUsoCrearRutas {
 
         // 2. Valida que no exista una ruta con este nombre
         java.util.List<Ruta> rutasExistentes = rutas.findByNombreRuta(nombreRuta);
-        if (rutasExistentes.size() > 0){
+        if (rutasExistentes.size() > 0) {
             throw new ExcepcionRutas("Existe una ruta con este Nombre");
         }
 
-        //Guarda la nueva ruta
+        // Guarda la nueva ruta
         Ruta nuevaRuta = new Ruta();
 
         nuevaRuta.setNombreRuta(nombreRuta);
@@ -61,8 +61,8 @@ public class CasosDeUsoCrearRutas {
 
     }
 
-    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion) 
-        throws ExcepcionRutas {
+    public void agregarUbicacionARuta(Long idRuta, Long idUbicacion)
+            throws ExcepcionRutas {
 
         // 1. valida que exista la ruta
         Optional<Ruta> ruta = rutas.findById(idRuta);
@@ -84,15 +84,14 @@ public class CasosDeUsoCrearRutas {
         rutas.save(rutaR);
     }
 
-
-    public void mostrarRutasAlternativas(double distancia) throws ExcepcionRutas{
-        //Valida que haya rutas con la distancia solicitada
-        List<Ruta> ruta = rutas.findByDistanciaRutas(distancia);
-        if(ruta.isEmpty()){
+    public void mostrarRutasAlternativas(double distancia) throws ExcepcionRutas {
+        // Valida que haya rutas con la distancia solicitada
+        List<Ruta> ruta = rutas.findByDistancia(distancia);
+        if (ruta.isEmpty()) {
             throw new ExcepcionRutas("No existen rutas con esa distancia");
         }
-        //Muestra las rutas solicitadas
-        for(int i = 0; i<ruta.size(); i++){
+        // Muestra las rutas solicitadas
+        for (int i = 0; i < ruta.size(); i++) {
             System.out.println(ruta.get(i).getNombreRuta());
             System.out.println(ruta.get(i).getDescripcion());
             System.out.println(ruta.get(i).getDistancia());
@@ -101,7 +100,6 @@ public class CasosDeUsoCrearRutas {
 
         return;
     }
-
 
     // CU02: Unirse a una ruta específica
     public void unirseARuta(Long idRuta, Long idUsuario) throws ExcepcionRutas {
@@ -121,40 +119,34 @@ public class CasosDeUsoCrearRutas {
 
         Usuario usuario = usuarioOptional.get();
 
-        // 3. Verifica que exista cupo para un nuevo participante
-        if (rutaSeleccionada.getCupoDisponible() <= 0) {
-            throw new ExcepcionRutas("No hay disponibilidad de cupos en esta ruta");
-        }
-
-        // 4. Añade al usuario a la lista de participantes de la ruta
-        rutaSeleccionada.agregarParticipante(usuario);
-
-        // 5. Disminuye el cupo disponible
-        rutaSeleccionada.disminuirCupo();
-
-        // 6. Actualiza la ruta en la base de datos
+        // 3. Añade al usuario a la lista de participantes de la ruta y actualiza la
+        // base de datos
+        rutaSeleccionada.setParticipantes(usuario);
         rutas.save(rutaSeleccionada);
 
-        // 7. Muestra alerta "se ha unido con éxito"
-        System.out.println("Se ha unido con éxito a la ruta " + rutaSeleccionada.getNombreRuta());
+        // 4. Muestra alerta "se ha unido con éxito"
+        System.out.println("Se ha unido con éxito a la ruta " +
+                rutaSeleccionada.getNombreRuta());
+
     }
 
-    // CU03: Filtrar rutas existentes
+    // // CU03: Filtrar rutas existentes
     public List<Ruta> filtrarRutas(double distanciaMaxima) {
         // 1. Muestra todas las rutas disponibles
         List<Ruta> todasLasRutas = rutas.findAll();
 
         // 2. Filtra las rutas por distancia máxima
         List<Ruta> rutasFiltradas = todasLasRutas.stream()
-                .filter(ruta -> ruta.getDistancia() <= distanciaMaxima)
+                .filter(ruta -> ruta.getDistancia() < distanciaMaxima)
                 .collect(Collectors.toList());
 
-        // 3. Si no existen rutas que cumplan con los filtros especificados, muestra un mensaje
+        // 3. Si no existen rutas que cumplan con los filtros especificados, muestra un
+        // mensaje
         if (rutasFiltradas.isEmpty()) {
             System.out.println("No hay rutas existentes con los requisitos especificados");
         }
 
         return rutasFiltradas;
     }
-}
 
+}

@@ -11,6 +11,6 @@ public interface RepositorioRuta
 extends JpaRepository<Ruta,Long>{
  
     List<Ruta> findByNombreRuta(String nombreRuta);
-    List<Ruta> findByDistanciaRutas(double distancia);
+    List<Ruta> findByDistancia(double distancia);
 
 }
