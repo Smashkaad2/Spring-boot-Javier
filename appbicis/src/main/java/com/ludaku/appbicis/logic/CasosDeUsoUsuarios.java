@@ -20,7 +20,7 @@ public class CasosDeUsoUsuarios {
 
     public void crearUsuario(String login, String password, String nombre) throws ExcepcionUsuarios {
 
-        // Validar que no haya otros usuarios con ese login
+        // Validar que no haya otros usuarios con ese login pb
         List<Usuario> usuariosExistentes = repositorioUsuario.findByNickname(login);
         if (usuariosExistentes.size() > 0) {
             throw new ExcepcionUsuarios("Existe otro usuario con este login");
