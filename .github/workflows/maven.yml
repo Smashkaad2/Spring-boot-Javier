@@ -31,7 +31,7 @@ jobs:
       run: cd appbicis; mvn -B package --file pom.xml -DskipTests
 
     - name: Ejecutar mySQL
-      run: cd appbicis; docker compose up -d;
+      run: ./ejecutar.sh
 
     - name: probar
       run: cd appbicis; mvn test
